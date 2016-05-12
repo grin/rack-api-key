@@ -90,7 +90,7 @@ class RackApiKey
   # authorized. Intentionally left here if anyone wants to override this
   # functionality, specifically change the format of the message or the
   # media type.
-  def unauthorized_api_key
+  def unauthorized_api_key(env)
     body_text = 'The API key provided is not authorized.'
     [401, {'Content-Type' => 'text/plain; charset=utf-8',
            'Content-Length' => body_text.size.to_s}, [body_text]]
@@ -100,7 +100,7 @@ class RackApiKey
   # Checks if the API key header value is present and the API key
   # that was returned from the API key proc is present.
   # Intentionally left here is anyone wants to override this functionality.
-  def valid_api_key?(api_header_val, api_key_lookup_val)
+  def valid_api_key?(api_header_val, api_key_lookup_val, env)
     !api_header_val.nil? && api_header_val != '' &&
     !api_key_lookup_val.nil? && api_key_lookup_val != ''
   end
@@ -111,11 +111,11 @@ class RackApiKey
     api_header_val = env[@options[:header_key]]
     api_key_lookup_val = @options[:api_key_proc].call(api_header_val)
 
-    if valid_api_key?(api_header_val, api_key_lookup_val)
+    if valid_api_key?(api_header_val, api_key_lookup_val, env)
       rack_api_key_request_setter(env, api_key_lookup_val)
       @app.call(env)
     else
-      unauthorized_api_key
+      unauthorized_api_key(env)
     end
   end
 
