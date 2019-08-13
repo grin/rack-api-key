@@ -17,5 +17,5 @@ Gem::Specification.new do |gem|
   gem.add_dependency %q<rack>, [">= 1.0"]
   gem.add_development_dependency %q<rake>, ["0.9.2.2"]
   gem.add_development_dependency %q<rspec>, ["~> 2.12.0"]
-  gem.add_development_dependency %q<rack-test>, ["~> 0.6.2"]
+  gem.add_development_dependency %q<rack-test>, ["~> 0.7.1"]
 end
